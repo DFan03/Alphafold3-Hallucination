@@ -1,0 +1,52 @@
+# Generic Multistate Glycoprotein Binder Design (+glyco / -bare)
+# Targets a synthetic receptor carrying a tri-antennary fucosylated N-glycan (A3G3F) at N15
+# while contrasting against the aglycosylated bare receptor (-bare) via `glyco_delta`.
+name: glycoprotein_binder_multistate
+target_seq: "GSELKAELLAKLEENATKELAKKLEELAKKAEELAKKLEELG"
+target_n_pos: 15
+glycoform: A3G3F
+include_bare: true
+binder_length: 56
+steps: 100
+proposals_per_step: 1
+num_recycles: 3
+num_diffusion_samples: 1
+flash_attention: triton
+backend: in_memory
+T_init: 0.05
+half_life: 50.0
+temp_schedule: exp
+mutation_rate: "3-1"
+mutation_method: carb_blosum
+blosum_temp: 1.0
+wf_cap_frac: 0.12
+mask_mode: interface
+interface_dist: 6.0
+mask_refresh_interval: 10
+p_nonint: 0.05
+lazy_neg_interval: 3
+exclude_aa: "CP"
+forbid_sequon: true
+losses: "glyco_delta"
+loss_weights: "1.0"
+w1_ipsae_glyco: 1.0
+w2_delta_iptm: 1.0
+w3_delta_ipsae: 1.0
+w4_hbonds_glycan: 0.05
+w5_rmsd_core: 0.10
+w_glycan_contacts: 0.15
+w_nonstem_sugars: 0.20
+w_ch_pi: 0.10
+w_binder_plddt: 0.25
+w_stereo_penalty: 0.50
+w_rg_penalty: 0.10
+w_excess_target_contacts: 0.05
+target_max_contacts: 14
+w_forbidden_aa: 1.0
+# Optional steric clash guard against a full-length receptor reference CIF:
+# steric_clash_ref_cif: ./path/to/full_receptor_ref.cif
+# steric_ref_residues: [1, 42]
+# steric_clash_weight: 0.2
+seed: 0
+out_root: ./runs
+tmp_root: ./tmp

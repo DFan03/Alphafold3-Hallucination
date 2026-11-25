@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "af3-hall"
+version = "0.1.0"
+description = "Standalone multistate all-atom AlphaFold 3 MCMC hallucination and binder evolution engine"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["alphafold3", "protein-design", "hallucination", "mcmc", "multistate", "glycoprotein"]
+dependencies = [
+    "numpy>=1.24",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+mpnn = [
+    "torch>=2.0",
+]
+dev = [
+    "pytest>=7.4",
+]
+
+[project.scripts]
+af3-hall = "af3_hall.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
