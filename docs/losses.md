@@ -16,7 +16,7 @@ Every per-state loss takes `ctx: dict[str, Any]` (produced by `extract_state_con
 | `pae` | `pae_mean / 31.75` | `[0, 1]`, lower = tighter PAE | Mean over the full `[N_tok, N_tok]` PAE matrix (`PAE_MAX = 31.75` Å). |
 | `ipae` | `ipae_mean / 31.75` | `[0, 1]`, lower = tighter inter-PAE | Mean inter-chain PAE across tokens on different chains. |
 | `pae_asym` | `abs(mean(pae[B,R]) - mean(pae[R,B])) / 31.75` | `[0, 1]`, lower = symmetric PAE | Penalizes directional PAE asymmetry between mutable chain and partner. |
-| `dual` | `0.5 * ((1.0 - plddt) + (1.0 - ptm))` | `[0, 1]`, default loss | AFhall-parity monomer/multimer folding + confidence loss. |
+| `dual` | `0.5 * ((1.0 - plddt) + (1.0 - ptm))` | `[0, 1]`, default loss | Default monomer/multimer folding + confidence loss. |
 | `rmsd` | `rmsd_core` | `>= 0` Å | Kabsch-aligned core Cα RMSD of mutable chain relative to `ref_cif` / step-0. |
 | `contact` | `contact_score` | `[0, 1]`, `0` = tight contact | ColabDesign-style mean closest `k=10` Cβ–Cβ distance to partner chains normalized by `14.0` Å. |
 | `rg` | `max(0.0, rg_ratio - 1.0)` | `>= 0` | Penalizes radius of gyration exceeding `2.2 * N^0.38` Å. |

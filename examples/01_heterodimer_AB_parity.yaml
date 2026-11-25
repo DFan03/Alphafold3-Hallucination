@@ -1,4 +1,4 @@
-# AFhall (dmitropher/af2_multistate_hallucination) Parity Example on AlphaFold 3
+# Multistate De Novo Heterodimer Example on AlphaFold 3 (AB+, AA-, BB-)
 # Equivalent shorthand CLI:
 #   af3-hall --oligo AB+,AA-,BB- --L 50,50 --losses dual --steps 100
 name: heterodimer_ab_parity

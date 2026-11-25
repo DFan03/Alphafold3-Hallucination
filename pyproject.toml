@@ -25,6 +25,11 @@ dev = [
 [project.scripts]
 af3-hall = "af3_hall.cli:main"
 
+[project.urls]
+Homepage = "https://github.com/DFan03/Alphafold3-Hallucination"
+Repository = "https://github.com/DFan03/Alphafold3-Hallucination"
+Documentation = "https://github.com/DFan03/Alphafold3-Hallucination#readme"
+
 [tool.setuptools.packages.find]
 where = ["src"]
 

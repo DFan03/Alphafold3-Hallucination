@@ -17,8 +17,8 @@
 ## 2. Local Package Installation
 
 ```bash
-git clone <your-repo-url> af3-hall
-cd af3-hall
+git clone https://github.com/DFan03/Alphafold3-Hallucination.git
+cd Alphafold3-Hallucination
 
 # Standard editable install with pytest
 pip install -e ".[dev]"

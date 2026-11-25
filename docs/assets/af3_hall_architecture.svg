@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 460" width="1120" height="460" role="img" aria-label="AlphaFold3 Hallucination multi-state all-atom co-evolution architecture diagram">
+  <defs>
+    <style>
+      .sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    </style>
+    <marker id="arrow-slate" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 1 1.5 L 8.5 5 L 1 8.5 z" fill="#475569"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+      <path d="M 1 1.5 L 8.5 5 L 1 8.5 z" fill="#1e5aa8"/>
+    </marker>
+    <marker id="arrow-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+      <path d="M 1 1.5 L 8.5 5 L 1 8.5 z" fill="#0d7a6f"/>
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+      <path d="M 1 1.5 L 8.5 5 L 1 8.5 z" fill="#b7610e"/>
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+      <path d="M 1 1.5 L 8.5 5 L 1 8.5 z" fill="#5b4bb7"/>
+    </marker>
+  </defs>
+
+  <!-- Crisp outer card -->
+  <rect x="1" y="1" width="1118" height="458" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <!-- Top Header Bar -->
+  <text x="26" y="39" class="sans" font-size="18.5" font-weight="700" fill="#0f172a" letter-spacing="-0.2">AlphaFold3 Hallucination — Multi-State All-Atom Co-Evolution</text>
+  <rect x="752" y="18" width="344" height="28" rx="14" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="924" y="36" text-anchor="middle" class="mono" font-size="11.2" font-weight="600" fill="#1e5aa8">Hot-JAX AF3 v3.0.1 · Sequence–Structure MCMC</text>
+  <line x1="24" y1="62" x2="1096" y2="62" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- COLUMN 1: 1. Multi-Modal Inputs -->
+  <rect x="24" y="76" width="236" height="308" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+  <text x="38" y="99" class="sans" font-size="12.8" font-weight="700" fill="#1e5aa8">1. Multi-Modal Inputs</text>
+
+  <!-- Input Card 1: Target Chains -->
+  <rect x="34" y="112" width="216" height="90" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <rect x="34" y="112" width="4" height="90" rx="2" fill="#1e5aa8"/>
+  <text x="46" y="130" class="sans" font-size="11.5" font-weight="700" fill="#0f172a">Target Chains</text>
+  <circle cx="50" cy="147" r="2.2" fill="#1e5aa8"/>
+  <text x="58" y="150.5" class="sans" font-size="10.4" fill="#334155">Proteins</text>
+  <circle cx="50" cy="165" r="2.2" fill="#1e5aa8"/>
+  <text x="58" y="168.5" class="sans" font-size="9.8" fill="#334155">N-Glycans <tspan class="mono" font-size="8.8" fill="#0f172a">CCD + bondedAtomPairs</tspan></text>
+  <circle cx="50" cy="183" r="2.2" fill="#1e5aa8"/>
+  <text x="58" y="186.5" class="sans" font-size="10.4" fill="#334155">Small Molecules / Ligands</text>
+
+  <!-- Input Card 2: Designable Protomers -->
+  <rect x="34" y="211" width="216" height="82" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <rect x="34" y="211" width="4" height="82" rx="2" fill="#0d7a6f"/>
+  <text x="46" y="229" class="sans" font-size="11.5" font-weight="700" fill="#0f172a">Designable Protomers</text>
+  <circle cx="50" cy="247" r="2.2" fill="#0d7a6f"/>
+  <text x="58" y="250.5" class="sans" font-size="10.4" fill="#334155">De Novo Binder</text>
+  <circle cx="50" cy="266" r="2.2" fill="#0d7a6f"/>
+  <text x="58" y="269.5" class="sans" font-size="10.4" fill="#334155">Oligomer</text>
+  <rect x="57" y="275" width="144" height="14" rx="4" fill="#f0fdfa" stroke="#99f6e4" stroke-width="0.8"/>
+  <text x="129" y="285" text-anchor="middle" class="mono" font-size="9.4" font-weight="600" fill="#0d7a6f">--oligo AB+,AA-,BB-</text>
+
+  <!-- Input Card 3: Optional Constraints -->
+  <rect x="34" y="302" width="216" height="70" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <rect x="34" y="302" width="4" height="70" rx="2" fill="#64748b"/>
+  <text x="46" y="320" class="sans" font-size="11.5" font-weight="700" fill="#0f172a">Optional Constraints</text>
+  <circle cx="50" cy="338" r="2.2" fill="#64748b"/>
+  <text x="58" y="341.5" class="sans" font-size="10.4" fill="#334155">Steric Exclusion Mask</text>
+  <circle cx="50" cy="356" r="2.2" fill="#64748b"/>
+  <text x="58" y="359.5" class="sans" font-size="10.4" fill="#334155">MSA / Target JSON</text>
+
+  <!-- Connector Arrow: Inputs -> Engine -->
+  <line x1="260" y1="230" x2="284" y2="230" stroke="#475569" stroke-width="1.8" marker-end="url(#arrow-slate)"/>
+
+  <!-- COLUMN 2: 2. Persistent Hot-JAX MCMC Engine -->
+  <rect x="286" y="76" width="548" height="308" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+  <text x="302" y="99" class="sans" font-size="12.8" font-weight="700" fill="#0f172a">2. Persistent Hot-JAX MCMC Engine</text>
+  <rect x="658" y="84" width="162" height="20" rx="10" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.9"/>
+  <text x="739" y="97.5" text-anchor="middle" class="sans" font-size="10" font-weight="600" fill="#475569">Simulated Annealing Loop</text>
+
+  <!-- Step A: Guided Sequence Proposal -->
+  <rect x="302" y="114" width="234" height="106" rx="10" fill="#ffffff" stroke="#93c5fd" stroke-width="1.3"/>
+  <circle cx="318" cy="132" r="9" fill="#1e5aa8"/>
+  <text x="318" y="135.5" text-anchor="middle" class="sans" font-size="10.5" font-weight="700" fill="#ffffff">A</text>
+  <text x="333" y="135.5" class="sans" font-size="11.2" font-weight="700" fill="#1e5aa8">Guided Sequence Proposal</text>
+  <text x="313" y="154" class="mono" font-size="9.5" fill="#1e293b">BLOSUM62 · carb_blosum</text>
+  <text x="313" y="170" class="sans" font-size="9.4" fill="#334155"><tspan class="mono" font-size="9" fill="#0f172a">LigandMPNN</tspan> (sugar-aware) · <tspan class="mono" font-size="9" fill="#0f172a">ProteinMPNN</tspan></text>
+  <text x="313" y="187" class="sans" font-size="9.6" fill="#334155">Hard hygiene (<tspan class="mono" font-size="9" font-weight="600" fill="#1f7a4c">0 Cys / 0 Pro / 0 sequon</tspan>)</text>
+  <text x="313" y="203" class="sans" font-size="10" fill="#475569">Dynamic interface mask refresh</text>
+
+  <!-- Step B: Hot-JAX AlphaFold 3 (v3.0.1) -->
+  <rect x="584" y="114" width="234" height="106" rx="10" fill="#ffffff" stroke="#5eead4" stroke-width="1.3"/>
+  <circle cx="600" cy="132" r="9" fill="#0d7a6f"/>
+  <text x="600" y="135.5" text-anchor="middle" class="sans" font-size="10.5" font-weight="700" fill="#ffffff">B</text>
+  <text x="615" y="135.5" class="sans" font-size="11.2" font-weight="700" fill="#0d7a6f">Hot-JAX AlphaFold 3 (v3.0.1)</text>
+  <text x="595" y="154" class="sans" font-size="10" fill="#334155">Single-process compiled kernel</text>
+  <text x="595" y="170" class="sans" font-size="10" fill="#334155"><tspan class="mono" font-size="9.5" font-weight="600" fill="#0f172a">256 / 384 / 512</tspan> token buckets</text>
+  <text x="595" y="187" class="sans" font-size="10" fill="#334155">Triton FlashAttention</text>
+  <text x="595" y="203" class="sans" font-size="10" fill="#475569">Lazy negative-state eval (<tspan class="mono" font-size="9.5">K</tspan>-step cadence)</text>
+
+  <!-- Step C: Multi-State All-Atom Loss J(x) -->
+  <rect x="584" y="260" width="234" height="106" rx="10" fill="#ffffff" stroke="#fdba74" stroke-width="1.3"/>
+  <circle cx="600" cy="278" r="9" fill="#b7610e"/>
+  <text x="600" y="281.5" text-anchor="middle" class="sans" font-size="10.5" font-weight="700" fill="#ffffff">C</text>
+  <text x="615" y="281.5" class="sans" font-size="10.8" font-weight="700" fill="#b7610e">Multi-State All-Atom Loss <tspan class="mono">J(x)</tspan></text>
+  <text x="595" y="300" class="sans" font-size="10" fill="#334155">Positive vs. Negative states</text>
+  <text x="595" y="316" class="mono" font-size="9.5" fill="#0f172a">ipTM, ipSAE_min, pLDDT, pTM</text>
+  <text x="595" y="332" class="sans" font-size="10" fill="#334155">H-bonds, CH–π, RMSD, Steric clash</text>
+  <text x="595" y="348" class="sans" font-size="10" fill="#475569">+ custom <tspan class="mono" font-size="9.5" fill="#b7610e">@register_loss</tspan> plugins</text>
+
+  <!-- Step D: Metropolis-Hastings Annealing -->
+  <rect x="302" y="260" width="234" height="106" rx="10" fill="#ffffff" stroke="#c4b5fd" stroke-width="1.3"/>
+  <circle cx="318" cy="278" r="9" fill="#5b4bb7"/>
+  <text x="318" y="281.5" text-anchor="middle" class="sans" font-size="10.5" font-weight="700" fill="#ffffff">D</text>
+  <text x="333" y="281.5" class="sans" font-size="11" font-weight="700" fill="#5b4bb7">Metropolis–Hastings Annealing</text>
+  <text x="313" y="300" class="sans" font-size="10" fill="#334155">Accept / Reject (<tspan class="mono" font-size="9.4" fill="#0f172a">T_init → exp/lin</tspan>)</text>
+  <text x="313" y="317" class="sans" font-size="10" fill="#334155">Update <tspan class="mono" font-size="9.5" fill="#0f172a">best_&lt;state&gt;</tspan></text>
+  <text x="313" y="334" class="sans" font-size="10" fill="#334155">Update <tspan class="mono" font-size="9.5" fill="#1f7a4c">best_clean_&lt;state&gt;</tspan></text>
+  <text x="313" y="350" class="sans" font-size="9.8" fill="#475569">Propose next mutation or checkpoint</text>
+
+  <!-- Curved Clockwise Feedback Loop Arrows -->
+  <!-- A -> B -->
+  <path d="M 538 164 Q 560 144 581 164" fill="none" stroke="#0d7a6f" stroke-width="2" marker-end="url(#arrow-teal)"/>
+  <!-- B -> C -->
+  <path d="M 704 222 Q 724 240 704 257" fill="none" stroke="#b7610e" stroke-width="2" marker-end="url(#arrow-amber)"/>
+  <!-- C -> D -->
+  <path d="M 582 316 Q 560 336 539 316" fill="none" stroke="#5b4bb7" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <!-- D -> A -->
+  <path d="M 416 258 Q 396 240 416 223" fill="none" stroke="#1e5aa8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <!-- Central Cycle Hub Badge -->
+  <rect x="514" y="227" width="92" height="26" rx="13" fill="#ffffff" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="560" y="243.5" text-anchor="middle" class="sans" font-size="10.2" font-weight="700" fill="#334155">SA Cycle</text>
+
+  <!-- Connector Arrow: Engine -> Export -->
+  <line x1="834" y1="230" x2="858" y2="230" stroke="#475569" stroke-width="1.8" marker-end="url(#arrow-slate)"/>
+
+  <!-- COLUMN 3: 3. Export & Resumability -->
+  <rect x="860" y="76" width="236" height="308" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+  <text x="874" y="99" class="sans" font-size="12.8" font-weight="700" fill="#1f7a4c">3. Export &amp; Resumability</text>
+
+  <!-- Output Card 1 -->
+  <rect x="870" y="114" width="216" height="58" rx="8" fill="#ffffff" stroke="#86efac" stroke-width="1.1"/>
+  <text x="882" y="135" class="mono" font-size="10.8" font-weight="700" fill="#1f7a4c">best_clean_&lt;state&gt;.cif</text>
+  <text x="882" y="155" class="sans" font-size="10.2" fill="#334155">Hygiene-filtered (<tspan class="mono" font-size="9.5">0 C/P/sequon</tspan>)</text>
+
+  <!-- Output Card 2 -->
+  <rect x="870" y="180" width="216" height="58" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.1"/>
+  <text x="882" y="201" class="mono" font-size="10.5" font-weight="700" fill="#0f172a">best_&lt;state&gt;.cif</text>
+  <text x="882" y="221" class="sans" font-size="10.2" fill="#334155">&amp; <tspan class="mono" font-size="9.8" fill="#0f172a">candidates.tsv</tspan> ranked scores</text>
+
+  <!-- Output Card 3 -->
+  <rect x="870" y="246" width="216" height="58" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.1"/>
+  <text x="882" y="267" class="mono" font-size="10.8" font-weight="700" fill="#0f172a">steps.jsonl</text>
+  <text x="882" y="287" class="sans" font-size="10.2" fill="#334155">Trajectory metrics per MCMC step</text>
+
+  <!-- Output Card 4 -->
+  <rect x="870" y="312" width="216" height="58" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.1"/>
+  <text x="882" y="333" class="mono" font-size="10.8" font-weight="700" fill="#0f172a">state.json</text>
+  <text x="882" y="353" class="sans" font-size="10.2" fill="#334155">Atomic checkpoint resume</text>
+
+  <!-- BOTTOM PERFORMANCE STRIP (4 Metric Pills) -->
+  <!-- Pill 1 -->
+  <rect x="24" y="399" width="256" height="46" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.1"/>
+  <text x="152" y="418" text-anchor="middle" class="mono" font-size="12.5" font-weight="700" fill="#1e5aa8">~7–8 s/step</text>
+  <text x="152" y="435" text-anchor="middle" class="sans" font-size="10" fill="#475569"><tspan class="mono" font-size="9.5">384</tspan> bucket + lazy neg, 1× A100</text>
+
+  <!-- Pill 2 -->
+  <rect x="296" y="399" width="256" height="46" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.1"/>
+  <text x="424" y="418" text-anchor="middle" class="mono" font-size="12.5" font-weight="700" fill="#0d7a6f">~11.5 s/step</text>
+  <text x="424" y="435" text-anchor="middle" class="sans" font-size="10" fill="#475569"><tspan class="mono" font-size="9.4">AB+,AA-,BB-</tspan> 3-state, <tspan class="mono" font-size="9.5">~4.6 GB</tspan> VRAM</text>
+
+  <!-- Pill 3 -->
+  <rect x="568" y="399" width="256" height="46" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.1"/>
+  <text x="696" y="418" text-anchor="middle" class="mono" font-size="12.5" font-weight="700" fill="#b7610e">5.3× faster</text>
+  <text x="696" y="435" text-anchor="middle" class="sans" font-size="10" fill="#475569">vs. Chai-1 MCMC baseline</text>
+
+  <!-- Pill 4 -->
+  <rect x="840" y="399" width="256" height="46" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.1"/>
+  <text x="968" y="418" text-anchor="middle" class="mono" font-size="12.5" font-weight="700" fill="#5b4bb7">&lt; 3 s</text>
+  <text x="968" y="435" text-anchor="middle" class="sans" font-size="10" fill="#475569"><tspan class="mono" font-size="9.5">--mock</tspan> CPU smoke test</text>
+</svg>
