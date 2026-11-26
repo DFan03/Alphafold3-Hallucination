@@ -168,6 +168,8 @@ af3-hall --config examples/05_foldable_heterodimer_GB1_proteinL.yaml
 
 ![ipTM and loss over 100 steps](examples/05_foldable_heterodimer/iptm_loss_trajectory.svg)
 
+![Interface at step 0 vs step 83](examples/05_foldable_heterodimer/interface_step0_vs_step83.png)
+
 **Result in 100 steps (seed 0, `AB+` only, loss `dual`, `T_init 0.01`, `mutation_rate 3-1`):** ipTM `0.08 → 0.74` (best accepted step 83; ipTM is *not* in the loss), pTM `0.50 → 0.81`, pLDDT `0.79 → 0.89`, `dual` loss `0.354 → 0.150`, helix/strand content of both chains preserved, interface `44 → 88` chain-A atoms within 5 Å of chain B. First and last structures: [step 0](examples/05_foldable_heterodimer/step_0000_acc_AB_pos.cif), [step 83](examples/05_foldable_heterodimer/step_0083_acc_AB_pos.cif). **Runtime:** `628 s` for 100 steps on one A100 80 GB (median `5.9 s/step`, step 0 incl. compile `31 s`). One seed, AF3's own confidences: a demonstration, not a benchmark.
 
 ---

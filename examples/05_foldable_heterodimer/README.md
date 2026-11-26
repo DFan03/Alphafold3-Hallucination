@@ -16,6 +16,10 @@ af3-hall --config examples/05_foldable_heterodimer_GB1_proteinL.yaml --mock   # 
 (`dual` = pLDDT + pTM only); it rises because the interface makes the complex confident. For 79 steps the chain crept along at ipTM 0.18-0.36 (7 accepted
 steps), then two accepted mutations did most of the work: step 80 `A:A20K` (ipTM 0.48) and step 83 `B:V49G` (ipTM 0.74). Both folds were kept.
 
+![Interface at step 0 vs step 83](interface_step0_vs_step83.png)
+
+**The interface, step 0 vs step 83** (PyMOL, both aligned on chain A): the start has a loose contact (21 interface residues, 5 polar contacts); at step 83 chain B's helix packs against chain A's helix with a larger buried interface (33 interface residues). The number of polar contacts is unchanged (5), so the gain comes from packing, not extra hydrogen bonds.
+
 | | Step 0 (start) | Step 83 (best, last accepted) |
 |---|---|---|
 | ipTM | 0.08 | **0.74** |
@@ -81,5 +85,5 @@ AlphaFold 3 v3.0.1 on one NVIDIA A100 80 GB, shared with other users' jobs, `num
 - ipTM and the loss are AlphaFold 3's own confidences on its own designs. There is no independent validation here (another predictor, MD or experiment).
 - Secondary-structure fractions use biotite P-SEA on the CIFs (coarse). Sequences were used as listed in the YAML.
 
-Files: `steps_summary.tsv` (per-step table), `iptm_loss_trajectory.svg` (figure, regenerate with `python make_figure.py`), the first and last CIFs above.
+Files: `steps_summary.tsv` (per-step table), `iptm_loss_trajectory.svg` (regenerate with `python make_figure.py`), `interface_step0_vs_step83.png` (regenerate with open-source PyMOL: `pymol -cq make_interface_figure.py`, then `python compose_interface_figure.py`), the first and last CIFs above.
 `af3-hall` always writes one CIF per accepted step to `<run>/trajectory/` (`--save-trajectory all` also keeps rejected candidates); only the first and last are kept here.
