@@ -11,6 +11,7 @@ runs/2026-11-25_af3_hall_my_job/
 ├── config.json               # Resolved configuration snapshot written at startup
 ├── run.log                   # UTC ISO-8601 progress log (or <log_dir>/af3_hall_<job>.log)
 ├── steps.jsonl               # Append-only per-step trajectory log (step 0..N)
+├── trajectory/               # ALWAYS written: step_NNNN_acc_<state>.cif for every accepted step (step 0 = initial); `--save-trajectory all` adds step_NNNN_rej_<state>.cif
 ├── state.json                # Atomic checkpoint enabling seamless crash/stop resume
 ├── ref_<state>.cif           # Step-0 reference structure (or copied from ref_cif)
 ├── cur_<state>.cif           # Most recently accepted structure per state

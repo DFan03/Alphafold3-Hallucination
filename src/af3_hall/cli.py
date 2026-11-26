@@ -68,6 +68,12 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="AF3 execution backend.",
     )
+    parser.add_argument(
+        "--save-trajectory",
+        choices=("accepted", "all"),
+        default=None,
+        help="Trajectory CIFs in <out>/trajectory/ are always written for accepted steps; 'all' also keeps rejected candidates.",
+    )
     parser.add_argument("--mutation-method", type=str, default=None, help="Proposal method (uniform|frequency_adjusted|blosum|carb_blosum|mpnn|ligand_mpnn_biased).")
     parser.add_argument("--mutation-rate", type=str, default=None, help="Mutation schedule (e.g. '3-1', '2', 'rand:1-3').")
     parser.add_argument("--T-init", "--t-init", dest="T_init", type=float, default=None, help="Initial annealing temperature.")
@@ -128,6 +134,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         cfg["seed"] = int(args.seed)
     if args.backend is not None:
         cfg["backend"] = args.backend
+    if args.save_trajectory is not None:
+        cfg["save_trajectory"] = args.save_trajectory
     if args.mock:
         cfg["backend"] = "mock"
     if args.mutation_method is not None:

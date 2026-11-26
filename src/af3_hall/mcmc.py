@@ -330,6 +330,36 @@ def _seq_signature(protomer_seqs: Mapping[str, str]) -> str:
     return ":".join(f"{k}={protomer_seqs[k]}" for k in sorted(protomer_seqs))
 
 
+def _save_trajectory_step(
+    cfg: Mapping[str, Any],
+    run_dir: Path,
+    step: int,
+    accepted: bool,
+    preds_by_state: Mapping[str, AF3Prediction],
+) -> dict[str, str] | None:
+    """Per-step structure trajectory. ALWAYS ON (like AF2 MCMC hallucination, one structure per accepted step).
+
+    Writes <run_dir>/trajectory/step_NNNN_<acc|rej>_<state>.cif for every state: always every accepted step (step 0 = the
+    initial structure); cfg save_trajectory=all additionally keeps rejected candidates. The accepted-step trajectory cannot be
+    switched off.
+    """
+    mode = str(cfg.get("save_trajectory", "accepted")).lower()
+    if mode not in ("accepted", "all"):
+        raise ValueError(f"save_trajectory must be accepted|all (trajectory cannot be disabled), got {mode!r}")
+    if mode == "accepted" and not accepted:
+        return None
+    tdir = run_dir / "trajectory"
+    tdir.mkdir(parents=True, exist_ok=True)
+    tag = "acc" if accepted else "rej"
+    saved: dict[str, str] = {}
+    for sname, pred in preds_by_state.items():
+        if Path(pred.cif_path).exists():
+            dst = tdir / f"step_{step:04d}_{tag}_{sname}.cif"
+            shutil.copyfile(pred.cif_path, dst)
+            saved[sname] = str(dst)
+    return saved or None
+
+
 _EXTRA_LOG_KEYS: tuple[str, ...] = (
     "ipsae_min_glyco",
     "ipsae_glycan_min",
@@ -498,6 +528,7 @@ def run(
                 best_clean_seqs = dict(cur_seqs)
                 best_clean_eval = dict(cur_eval)
                 _copy_state_cifs(init_preds, run_dir, "best_clean")
+            traj0 = _save_trajectory_step(cfg, run_dir, 0, True, init_preds)
             shutil.rmtree(init_work, ignore_errors=True)
 
             seq_sig = _seq_signature(cur_seqs)
@@ -529,6 +560,8 @@ def run(
             for extra_k in _EXTRA_LOG_KEYS:
                 if extra_k in cur_eval:
                     step0_rec[extra_k] = cur_eval[extra_k]
+            if traj0:
+                step0_rec["traj_cifs"] = traj0
             _append_jsonl(steps_jsonl, step0_rec)
             _write_json_atomic(
                 state_json,
@@ -787,6 +820,7 @@ def run(
                         best_clean_eval = dict(new_eval)
                         _copy_state_cifs(new_preds, run_dir, "best_clean")
 
+            traj_cifs = _save_trajectory_step(cfg, run_dir, step, bool(acc), new_preds)
             shutil.rmtree(step_work, ignore_errors=True)
 
             rec: dict[str, Any] = {
@@ -819,6 +853,8 @@ def run(
                 if extra_k in new_eval:
                     rec[extra_k] = new_eval[extra_k]
 
+            if traj_cifs:
+                rec["traj_cifs"] = traj_cifs
             _append_jsonl(steps_jsonl, rec)
             _write_json_atomic(
                 state_json,

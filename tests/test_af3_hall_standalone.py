@@ -104,6 +104,7 @@ def test_oligo_parser_and_shorthand_run(tmp_path: Path) -> None:
         "02_protein_binder_fixed_target.yaml",
         "03_glycoprotein_binder_multistate.yaml",
         "04_small_molecule_ligand_binder.yaml",
+        "05_foldable_heterodimer_GB1_proteinL.yaml",
     ],
 )
 def test_all_examples_cli_mock(yaml_name: str, tmp_path: Path) -> None:
@@ -483,3 +484,19 @@ def test_steric_clash_guard_and_candidate_export(tmp_path: Path) -> None:
         steric_hv25=1, steric_ca38=0, target_protein_contacts=16, n_forbidden_aa=0,
     )
     assert np.isfinite(j_val)
+
+
+def test_trajectory_always_written_and_all_mode(tmp_path: Path) -> None:
+    def run(extra: list[str]) -> tuple[Path, list[dict]]:
+        out = tmp_path / ("t_" + "_".join(extra) if extra else "t_default")
+        args = ["--mock", "--oligo", "AB+", "--L", "8,8", "--losses", "dual", "--steps", "6", "--seed", "5",
+                "--out-dir", str(out), "T_init=0.5", *extra]
+        assert cli_main(args) == 0
+        return out, [json.loads(ln) for ln in (out / "steps.jsonl").read_text(encoding="utf-8").splitlines()]
+
+    d, rows = run([])
+    acc = [r["step"] for r in rows if r["accepted"]]
+    assert acc[0] == 0
+    assert sorted(p.name for p in (d / "trajectory").glob("*.cif")) == [f"step_{k:04d}_acc_AB+.cif" for k in acc]
+    d2, rows2 = run(["--save-trajectory", "all"])
+    assert len(list((d2 / "trajectory").glob("*.cif"))) == len(rows2)

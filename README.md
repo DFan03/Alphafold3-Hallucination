@@ -159,6 +159,18 @@ af3-hall \
   ligand_ccd=HEM
 ```
 
+### Tutorial 5: Foldable *α/β* Heterodimer from Natural Domains (GB1 + Protein L)
+
+Instead of random starting sequences, start from two foldable α/β domains derived from natural proteins (GB1 56 aa = PDB 1PGA; protein L B1 64 aa = PDB 1HZ6 with N14D and W47Y; `0 Cys / 0 Pro / 0 sequon`) and let the MCMC build an interface between them while keeping both folds ([examples/05_foldable_heterodimer_GB1_proteinL.yaml](examples/05_foldable_heterodimer_GB1_proteinL.yaml), full write-up: [examples/05_foldable_heterodimer/](examples/05_foldable_heterodimer/README.md)).
+
+```bash
+af3-hall --config examples/05_foldable_heterodimer_GB1_proteinL.yaml
+```
+
+![ipTM and loss over 100 steps](examples/05_foldable_heterodimer/iptm_loss_trajectory.svg)
+
+**Result in 100 steps (seed 0, `AB+` only, loss `dual`, `T_init 0.01`, `mutation_rate 3-1`):** ipTM `0.08 → 0.74` (best accepted step 83; ipTM is *not* in the loss), pTM `0.50 → 0.81`, pLDDT `0.79 → 0.89`, `dual` loss `0.354 → 0.150`, helix/strand content of both chains preserved, interface `44 → 88` chain-A atoms within 5 Å of chain B. First and last structures: [step 0](examples/05_foldable_heterodimer/step_0000_acc_AB_pos.cif), [step 83](examples/05_foldable_heterodimer/step_0083_acc_AB_pos.cif). **Runtime:** `628 s` for 100 steps on one A100 80 GB (median `5.9 s/step`, step 0 incl. compile `31 s`). One seed, AF3's own confidences: a demonstration, not a benchmark.
+
 ---
 
 ## Complete CLI Options Reference
@@ -248,7 +260,7 @@ In addition to all CLI options above, YAML/JSON configs and `key=value` override
 
 - **[docs/installation.md](docs/installation.md)** — Local install, CPU `--mock` vs AlphaFold 3 v3.0.1 GPU setup, Triton FlashAttention vs `xla`, compilation buckets, persistent `AF3HotRunner`, and troubleshooting.
 - **[docs/losses.md](docs/losses.md)** — Complete catalog of all 14 `@register_loss` and `@register_multistate_loss("glyco_delta")` objectives, `compute_objective_J` weights, and custom loss plugin guide.
-- **[docs/outputs.md](docs/outputs.md)** — Output directory layout, `steps.jsonl` schema, atomic `state.json` resume, sequence hygiene (`best_clean_*`), and trajectory plotting.
+- **[docs/outputs.md](docs/outputs.md)** — Output directory layout (including the always-written per-step `trajectory/` CIFs), `steps.jsonl` schema, atomic `state.json` resume, sequence hygiene (`best_clean_*`), and trajectory plotting.
 
 ---
 

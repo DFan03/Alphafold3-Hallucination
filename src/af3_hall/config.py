@@ -80,6 +80,8 @@ DEFAULTS: dict[str, Any] = {
     "flash_attention": "triton",
     "gpu_device": 0,
     "buckets": [256, 384, 512, 768, 1024, 1536, 2048],
+    # Per-step structure trajectory in <run>/trajectory/ is ALWAYS written for accepted steps; "all" also keeps rejected candidates.
+    "save_trajectory": "accepted",
     # Simulated-annealing MCMC parameters
     "seed": 0,
     "steps": 100,

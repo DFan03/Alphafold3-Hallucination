@@ -17,3 +17,6 @@ ci_smoke_ex/
 *.pt
 *.npz
 .DS_Store
+
+# keep the two example structures (first/last step of the foldable-heterodimer example)
+!examples/05_foldable_heterodimer/*.cif

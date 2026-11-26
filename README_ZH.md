@@ -158,6 +158,18 @@ af3-hall \
   ligand_ccd=HEM
 ```
 
+### 示例 5：天然可折叠 α/β 异源二聚体（GB1 + Protein L）
+
+不从随机序列出发，而是用两个源自天然蛋白、可折叠的 α/β 结构域（GB1 56 aa = PDB 1PGA；protein L B1 64 aa = PDB 1HZ6 并带 N14D 与 W47Y 两处替换；`0 Cys / 0 Pro / 0 sequon`）作为起点，让 MCMC 在保持两个折叠的前提下构建二者之间的界面（[配置](examples/05_foldable_heterodimer_GB1_proteinL.yaml)，完整说明：[examples/05_foldable_heterodimer/](examples/05_foldable_heterodimer/README.md)）。
+
+```bash
+af3-hall --config examples/05_foldable_heterodimer_GB1_proteinL.yaml
+```
+
+![ipTM 与 loss 随 100 步的变化](examples/05_foldable_heterodimer/iptm_loss_trajectory.svg)
+
+**100 步结果（seed 0，仅 `AB+`，loss `dual`，`T_init 0.01`，`mutation_rate 3-1`）：** ipTM `0.08 → 0.74`（最佳接受步为第 83 步；ipTM 不在 loss 中），pTM `0.50 → 0.81`，pLDDT `0.79 → 0.89`，`dual` loss `0.354 → 0.150`，两条链的螺旋/折叠含量保持，界面处 A 链距 B 链 5 Å 内的原子数 `44 → 88`。首尾结构：[第 0 步](examples/05_foldable_heterodimer/step_0000_acc_AB_pos.cif)、[第 83 步](examples/05_foldable_heterodimer/step_0083_acc_AB_pos.cif)。**运行时间：** 1 张 A100 80 GB 上 100 步共 `628 s`（中位数 `5.9 s/步`，第 0 步含编译 `31 s`）。仅一个 seed、使用 AF3 自身置信度：这是演示，不是基准测试。
+
 ---
 
 ## 核心 CLI 参数与 YAML 配置说明
