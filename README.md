@@ -193,6 +193,10 @@ All flags map directly to [src/af3_hall/cli.py](src/af3_hall/cli.py) and overrid
 | `--seed` | `0` | Master RNG seed for sequence init, proposals, and AF3 `modelSeeds`. |
 | `--mock` | `False` | Shortcut for `--backend mock` (`MockAF3Runner`, zero-GPU deterministic CPU mode). |
 | `--backend` | `in_memory` | AF3 execution backend: `in_memory`, `subprocess`, or `mock`. |
+| `--save-trajectory` | `accepted` | A structure trajectory (`<run>/trajectory/step_NNNN_acc_<state>.cif`) is always written for accepted steps; `all` also keeps rejected candidates. |
+| `--fastrelax` | `False` | tmol FastRelax of every AF3-predicted state before scoring (affects structure-derived metrics only, not AF3 confidences); see [docs/fastrelax.md](docs/fastrelax.md). |
+| `--relax-scope` | `all` | `all` = whole-complex Cartesian FastRelax (~13 s per 100 residues); `shell` = backbone-fixed interface side-chain relax (~3 s). |
+| `--relax-repeats` | `1` | FastRelax repeats. |
 | `--mutation-method` | `blosum` | Proposal sampler: `uniform`, `frequency_adjusted`, `blosum`, `carb_blosum`, `mpnn`, `ligand_mpnn_biased`. |
 | `--mutation-rate` | `"3-1"` | Residue mutations per step: constant (`"2"`), linear anneal (`"3-1"`), or uniform random (`"rand:1-3"`). |
 | `--T-init`, `--t-init` | `0.05` | Initial simulated-annealing temperature. |
@@ -261,4 +265,5 @@ In addition to all CLI options above, YAML/JSON configs and `key=value` override
 
 - **[docs/installation.md](docs/installation.md)** — Local install, CPU `--mock` vs AlphaFold 3 v3.0.1 GPU setup, Triton FlashAttention vs `xla`, compilation buckets, persistent `AF3HotRunner`, and troubleshooting.
 - **[docs/losses.md](docs/losses.md)** — Complete catalog of all 14 `@register_loss` and `@register_multistate_loss("glyco_delta")` objectives, `compute_objective_J` weights, and custom loss plugin guide.
+- **[docs/fastrelax.md](docs/fastrelax.md)** — Optional `--fastrelax`: tmol FastRelax of every predicted state before scoring (whole-complex or interface side-chain scope), options, cost, limits.
 - **[docs/outputs.md](docs/outputs.md)** — Output directory layout (including the always-written per-step `trajectory/` CIFs), `steps.jsonl` schema, atomic `state.json` resume, sequence hygiene (`best_clean_*`), and trajectory plotting.

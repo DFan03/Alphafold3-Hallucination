@@ -74,6 +74,9 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Trajectory CIFs in <out>/trajectory/ are always written for accepted steps; 'all' also keeps rejected candidates.",
     )
+    parser.add_argument("--fastrelax", action="store_true", default=None, help="tmol FastRelax of every AF3-predicted state BEFORE scoring (see docs/fastrelax.md).")
+    parser.add_argument("--relax-scope", choices=("all", "shell"), default=None, help="all (default): whole complex; shell: backbone-fixed interface side chains.")
+    parser.add_argument("--relax-repeats", type=int, default=None, help="FastRelax repeats (default 1).")
     parser.add_argument("--mutation-method", type=str, default=None, help="Proposal method (uniform|frequency_adjusted|blosum|carb_blosum|mpnn|ligand_mpnn_biased).")
     parser.add_argument("--mutation-rate", type=str, default=None, help="Mutation schedule (e.g. '3-1', '2', 'rand:1-3').")
     parser.add_argument("--T-init", "--t-init", dest="T_init", type=float, default=None, help="Initial annealing temperature.")
@@ -134,6 +137,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         cfg["seed"] = int(args.seed)
     if args.backend is not None:
         cfg["backend"] = args.backend
+    if args.fastrelax:
+        cfg["fastrelax"] = True
+    if args.relax_scope is not None:
+        cfg["relax_scope"] = args.relax_scope
+    if args.relax_repeats is not None:
+        cfg["relax_repeats"] = int(args.relax_repeats)
     if args.save_trajectory is not None:
         cfg["save_trajectory"] = args.save_trajectory
     if args.mock:

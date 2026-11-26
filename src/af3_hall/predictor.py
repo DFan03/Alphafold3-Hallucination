@@ -85,6 +85,7 @@ class AF3Prediction:
     token_coords: np.ndarray | None
     iptm_binder: float
     wall_s: float = 0.0
+    relax: dict[str, Any] | None = None  # tmol FastRelax meta when --fastrelax is on (ok, E_before, E_after, ca_rmsd, ...)
 
 
 class AF3RunnerProtocol(Protocol):
@@ -984,9 +985,16 @@ class AF3Predictor:
         state_specs: Sequence[Mapping[str, Any]],
         cfg: Mapping[str, Any],
         runner: AF3RunnerProtocol | None = None,
+        relaxer: Any | None = None,
     ) -> None:
         self.state_specs = list(state_specs)
         self.cfg = dict(cfg)
+        # Optional FastRelax of every predicted state before scoring (cfg fastrelax / CLI --fastrelax); tests inject `relaxer`.
+        if relaxer is None and bool(cfg.get("fastrelax", False)):
+            from .relax import TmolRelaxer
+
+            relaxer = TmolRelaxer.from_config(cfg)
+        self.relaxer = relaxer
         self.exclude_aa = str(cfg.get("exclude_aa", "CP"))
         self.forbid_sequon = bool(cfg.get("forbid_sequon", True))
         self.allow_init_forbidden = bool(cfg.get("allow_init_forbidden", False))
@@ -1077,6 +1085,15 @@ class AF3Predictor:
         )
         glycan_cids = state_glycan_chain_ids(state_spec)
 
+        relax_meta: dict[str, Any] | None = None
+        if self.relaxer is not None:
+            raw_cif = Path(cif_path)
+            relaxed_cif = raw_cif.with_name(raw_cif.stem + "_relaxed.cif")
+            relax_meta = self.relaxer.relax(raw_cif, relaxed_cif, focus_chains=mut_chains or [binder_cid])
+            if relax_meta.get("ok"):
+                cif_path = relaxed_cif  # downstream scoring / proposals / saved CIFs all use the relaxed structure
+            relaxed_cif.with_suffix(".relax.json").write_text(json.dumps(relax_meta))
+
         cx = load_structure(
             cif_path,
             target_chain=target_cid,
@@ -1107,6 +1124,7 @@ class AF3Predictor:
             token_coords=tok_coords,
             iptm_binder=iptm_val,
             wall_s=wall_s,
+            relax=relax_meta,
         )
 
     def predict_all(

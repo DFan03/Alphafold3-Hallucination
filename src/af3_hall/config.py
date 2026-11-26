@@ -80,6 +80,16 @@ DEFAULTS: dict[str, Any] = {
     "flash_attention": "triton",
     "gpu_device": 0,
     "buckets": [256, 384, 512, 768, 1024, 1536, 2048],
+    # Optional tmol FastRelax of every predicted state BEFORE scoring (CLI --fastrelax); see docs/fastrelax.md
+    "fastrelax": False,
+    "relax_scope": "all",  # all = whole-complex Cartesian FastRelax | shell = backbone-fixed interface side-chain repack+min
+    "relax_repeats": 1,
+    "relax_shell": 8.0,  # shell scope: relax residues of the mutable chain(s) within this distance (A) of the other chains
+    "relax_cartesian": True,
+    "relax_on_fail": "raise",  # raise | skip (keep the raw AF3 structure and flag relax ok=False)
+    "relax_python": None,  # interpreter with torch + tmol + rfproteina; default: env AF3_HALL_RELAX_PYTHON, else "python"
+    "relax_device": "cuda:0",
+    "relax_timeout_s": 900,
     # Per-step structure trajectory in <run>/trajectory/ is ALWAYS written for accepted steps; "all" also keeps rejected candidates.
     "save_trajectory": "accepted",
     # Simulated-annealing MCMC parameters

@@ -964,6 +964,12 @@ def run(
         log(f"DONE best_J={best_eval['J']:.4f} best_loss={best_eval['loss']:.4f} out={run_dir}")
         return run_dir
     finally:
+        _rx = getattr(predictor, "relaxer", None)
+        if _rx is not None:
+            if hasattr(_rx, "summary"):
+                log(_rx.summary())
+            if hasattr(_rx, "close"):
+                _rx.close()
         log.close()
 
 

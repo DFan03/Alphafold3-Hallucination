@@ -500,3 +500,90 @@ def test_trajectory_always_written_and_all_mode(tmp_path: Path) -> None:
     assert sorted(p.name for p in (d / "trajectory").glob("*.cif")) == [f"step_{k:04d}_acc_AB+.cif" for k in acc]
     d2, rows2 = run(["--save-trajectory", "all"])
     assert len(list((d2 / "trajectory").glob("*.cif"))) == len(rows2)
+
+
+# ---------------- --fastrelax (tmol FastRelax before scoring) ----------------
+class _MockRelaxer:
+    """Copies the AF3 CIF to <stem>_relaxed.cif and records calls (stands in for the tmol worker)."""
+
+    def __init__(self, ok: bool = True) -> None:
+        self.calls: list[tuple[str, tuple[str, ...]]] = []
+        self.ok = ok
+
+    def relax(self, in_cif, out_cif, *, focus_chains=()):
+        self.calls.append((Path(in_cif).name, tuple(focus_chains)))
+        if not self.ok:
+            return {"ok": False, "skipped": True, "error": "mock failure"}
+        Path(out_cif).write_text(Path(in_cif).read_text(encoding="utf-8"), encoding="utf-8")
+        return {"ok": True, "E_before": 10.0, "E_after": -5.0, "ca_rmsd": 0.3, "relax_sec": 0.01}
+
+    def summary(self) -> str:
+        return f"mock relaxer calls={len(self.calls)}"
+
+    def close(self) -> None:
+        pass
+
+
+def test_fastrelax_flags_defaults_hook_and_skip(tmp_path: Path) -> None:
+    from af3_hall.cli import build_parser
+    from af3_hall.predictor import AF3Predictor
+
+    a = build_parser().parse_args(["--fastrelax", "--relax-scope", "shell", "--relax-repeats", "2"])
+    assert a.fastrelax is True and a.relax_scope == "shell" and a.relax_repeats == 2
+    cfg = load_config(overrides=["oligo=AB+", "binder_length=8,8", "losses=dual", "steps=2", "seed=1", "backend=mock"])
+    assert cfg["fastrelax"] is False and cfg["relax_scope"] == "all" and cfg["relax_repeats"] == 1
+    states = build_states_from_config(cfg)
+    seqs = {"A": "ADEFGHIK", "B": "ADEFGHIK"}
+
+    rx = _MockRelaxer()
+    out = AF3Predictor(states, cfg, runner=MockAF3Runner(), relaxer=rx).predict_all(seqs, seed=1, work_dir=tmp_path / "w", tag="t")
+    assert rx.calls
+    for p in out.values():
+        assert p.relax and p.relax["ok"] and p.cif_path.name.endswith("_relaxed.cif") and p.cif_path.exists()
+        assert p.cif_path.with_suffix(".relax.json").exists()
+    out2 = AF3Predictor(states, cfg, runner=MockAF3Runner(), relaxer=_MockRelaxer(ok=False)).predict_all(
+        seqs, seed=1, work_dir=tmp_path / "w2", tag="t")
+    for p in out2.values():
+        assert p.relax and p.relax["ok"] is False and not p.cif_path.name.endswith("_relaxed.cif")
+    assert AF3Predictor(states, cfg, runner=MockAF3Runner()).relaxer is None
+
+
+def test_fastrelax_mcmc_and_tmol_relaxer_protocol(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from af3_hall import relax as relax_mod
+    from af3_hall.predictor import AF3Predictor
+
+    cfg = load_config(overrides=[f"out_dir={tmp_path / 'rx'}", f"tmp_root={tmp_path}", "oligo=AB+", "binder_length=8,8",
+                                 "losses=dual", "steps=2", "seed=3", "T_init=0.01", "backend=mock"])
+    rx = _MockRelaxer()
+    run(cfg, predictor=AF3Predictor(build_states_from_config(cfg), cfg, runner=MockAF3Runner(), relaxer=rx))
+    assert len(rx.calls) >= 3
+
+    fake = tmp_path / "fake_worker.py"
+    fake.write_text(
+        "import sys, json, shutil\n"
+        "for line in sys.stdin:\n"
+        "    r = json.loads(line)\n"
+        "    if r['in_cif'].endswith('bad.cif'):\n"
+        "        print(json.dumps({'ok': False, 'error': 'boom'}), flush=True); continue\n"
+        "    shutil.copy(r['in_cif'], r['out_cif'])\n"
+        "    print(json.dumps({'ok': True, 'E_before': 1.0, 'E_after': 0.0, 'ca_rmsd': 0.1, 'relax_sec': 0.0, 'scope': r['scope'],\n"
+        "                      'repeats': r['repeats'], 'focus': r['focus_chains']}), flush=True)\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(relax_mod, "WORKER", fake)
+    src, bad = tmp_path / "x.cif", tmp_path / "bad.cif"
+    src.write_text("data_x\n", encoding="utf-8"); bad.write_text("data_x\n", encoding="utf-8")
+    rxr = relax_mod.TmolRelaxer(python=sys.executable, repeats=2, scope="shell", on_fail="raise", timeout_s=30)
+    try:
+        meta = rxr.relax(src, tmp_path / "x_relaxed.cif", focus_chains=["B"])
+        assert meta["ok"] and meta["scope"] == "shell" and meta["repeats"] == 2 and meta["focus"] == ["B"]
+        with pytest.raises(relax_mod.RelaxError):
+            rxr.relax(bad, tmp_path / "bad_relaxed.cif")
+        rxr.on_fail = "skip"
+        m2 = rxr.relax(bad, tmp_path / "bad_relaxed.cif")
+        assert m2["ok"] is False and m2["skipped"] is True
+        assert "ok=1 fail=2" in rxr.summary()
+    finally:
+        rxr.close()
+    with pytest.raises(ValueError):
+        relax_mod.TmolRelaxer(scope="bogus")

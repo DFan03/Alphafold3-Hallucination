@@ -204,4 +204,5 @@ af3-hall --config examples/05_foldable_heterodimer_GB1_proteinL.yaml
 
 - **[docs/installation.md](docs/installation.md)** — 本地安装、CPU `--mock` 与 AlphaFold 3 v3.0.1 GPU 环境配置、Triton FlashAttention 与 XLA 回退、编译分桶与排错。
 - **[docs/losses.md](docs/losses.md)** — 全部 `14` 个 `@register_loss` 与 `@register_multistate_loss("glyco_delta")` 公式、`compute_objective_J` 权重及自定义损失插件教程。
+- **[docs/fastrelax.md](docs/fastrelax.md)** — 可选 `--fastrelax`：在打分前用 tmol FastRelax 弛豫每个预测结构（整体或界面侧链范围），含参数、耗时与限制（英文）。
 - **[docs/outputs.md](docs/outputs.md)** — 输出目录结构、`steps.jsonl` 字段说明、`state.json` 断点续跑、序列合规输出（`best_clean_*`）与轨迹绘图脚本。
