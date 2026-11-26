@@ -7,7 +7,6 @@ name = "af3-hall"
 version = "0.1.0"
 description = "Standalone multistate all-atom AlphaFold 3 MCMC hallucination and binder evolution engine"
 requires-python = ">=3.10"
-license = { text = "MIT" }
 keywords = ["alphafold3", "protein-design", "hallucination", "mcmc", "multistate", "glycoprotein"]
 dependencies = [
     "numpy>=1.24",

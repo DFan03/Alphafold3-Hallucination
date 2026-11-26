@@ -3,7 +3,6 @@
 [English](README.md) | **简体中文**
 
 [![CI](https://github.com/DFan03/Alphafold3-Hallucination/actions/workflows/ci.yml/badge.svg)](https://github.com/DFan03/Alphafold3-Hallucination/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
 [![AlphaFold 3 v3.0.1](https://img.shields.io/badge/AlphaFold%203-v3.0.1-purple.svg)](docs/installation.md)
 
@@ -204,11 +203,3 @@ af3-hall --config examples/05_foldable_heterodimer_GB1_proteinL.yaml
 - **[docs/installation.md](docs/installation.md)** — 本地安装、CPU `--mock` 与 AlphaFold 3 v3.0.1 GPU 环境配置、Triton FlashAttention 与 XLA 回退、编译分桶与排错。
 - **[docs/losses.md](docs/losses.md)** — 全部 `14` 个 `@register_loss` 与 `@register_multistate_loss("glyco_delta")` 公式、`compute_objective_J` 权重及自定义损失插件教程。
 - **[docs/outputs.md](docs/outputs.md)** — 输出目录结构、`steps.jsonl` 字段说明、`state.json` 断点续跑、序列合规输出（`best_clean_*`）与轨迹绘图脚本。
-
----
-
-## 开源协议与第三方权重声明
-
-本项目基于 **MIT License** 开源（[LICENSE](LICENSE)）。
-
-本仓库**不包含也不分发** AlphaFold 3 源码、模型参数权重或 ProteinMPNN / LigandMPNN 权重。运行真实结构预测（`--backend in_memory` 或 `--backend subprocess`）前，请向 Google DeepMind 申请并遵守 AlphaFold 3 模型参数与源码的使用许可协议。

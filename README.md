@@ -3,7 +3,6 @@
 **English** | [简体中文 (Chinese)](README_ZH.md)
 
 [![CI](https://github.com/DFan03/Alphafold3-Hallucination/actions/workflows/ci.yml/badge.svg)](https://github.com/DFan03/Alphafold3-Hallucination/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
 [![AlphaFold 3 v3.0.1](https://img.shields.io/badge/AlphaFold%203-v3.0.1-purple.svg)](docs/installation.md)
 
@@ -261,11 +260,3 @@ In addition to all CLI options above, YAML/JSON configs and `key=value` override
 - **[docs/installation.md](docs/installation.md)** — Local install, CPU `--mock` vs AlphaFold 3 v3.0.1 GPU setup, Triton FlashAttention vs `xla`, compilation buckets, persistent `AF3HotRunner`, and troubleshooting.
 - **[docs/losses.md](docs/losses.md)** — Complete catalog of all 14 `@register_loss` and `@register_multistate_loss("glyco_delta")` objectives, `compute_objective_J` weights, and custom loss plugin guide.
 - **[docs/outputs.md](docs/outputs.md)** — Output directory layout (including the always-written per-step `trajectory/` CIFs), `steps.jsonl` schema, atomic `state.json` resume, sequence hygiene (`best_clean_*`), and trajectory plotting.
-
----
-
-## License & Third-Party Notice
-
-`af3-hall` is released under the **MIT License** ([LICENSE](LICENSE)).
-
-`af3-hall` does **not** bundle or redistribute AlphaFold 3 source code, AlphaFold 3 model parameters, or ProteinMPNN / LigandMPNN checkpoints. To run real structure predictions (`--backend in_memory` or `--backend subprocess`), you must separately obtain AlphaFold 3 and its model weights from Google DeepMind and comply with Google DeepMind's AlphaFold 3 Model Parameters Terms of Use and source license.
